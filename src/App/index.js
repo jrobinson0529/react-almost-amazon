@@ -1,38 +1,68 @@
 import React, { useState } from 'react';
-import './App.scss';
+import createAuthor from '../helpers/data/authorData';
 
-function App() {
-  const [domWriting, setDomWriting] = useState('Nothing Here!');
-
-  const handleClick = (e) => {
-    console.warn(`You clicked ${e.target.id}`);
-    setDomWriting(`You clicked ${e.target.id}! Check the Console!`);
+export default function StudentForm() {
+  const [author, setAuthor] = useState({
+    email: '',
+    favorite: false,
+    first_name: '',
+    last_name: '',
+    uid: '',
+  });
+  const handleInputChange = (e) => {
+    setAuthor((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.name === 'favorite' ? e.target.checked : e.target.value
+    }));
   };
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createAuthor(author);
+  };
   return (
-    <div className='App'>
-      <h2>INSIDE APP COMPONENT</h2>
-      <div>
-        <button
-          id='this-button'
-          className='btn btn-info'
-          onClick={handleClick}
-        >
-          I am THIS button
-        </button>
+    <>
+      <div className="author-form d-flex flex-column w-50 mx-auto flex-wrap">
+        <form
+          id="addAuthorForm"
+          autoComplete="off"
+          onSubmit={handleSubmit}
+          className='add-author-form'
+          >
+          <h2>New Author</h2>
+          <label>Email: </label>
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={author.email}
+            onChange={handleInputChange}
+          ></input>
+          <label>First Name: </label>
+          <input
+            name="first_name"
+            type="text"
+            placeholder="First Name"
+            value={author.first_name}
+            onChange={handleInputChange}
+          ></input>
+          <label>Last Name: </label>
+          <input
+            name="last_name"
+            type="text"
+            placeholder="Last Name"
+            value={author.last_name}
+            onChange={handleInputChange}
+          ></input>
+          <label>
+          <input
+            name="favorite"
+            type="checkbox"
+            checked={author.favorite}
+            onChange={handleInputChange}
+          ></input> Favorite</label>
+          <button type="submit">Submit</button>
+        </form>
       </div>
-      <div>
-        <button
-          id='that-button'
-          className='btn btn-primary mt-3'
-          onClick={handleClick}
-        >
-          I am THAT button
-        </button>
-      </div>
-      <h3>{domWriting}</h3>
-    </div>
+    </>
   );
 }
-
-export default App;
