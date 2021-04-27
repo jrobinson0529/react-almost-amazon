@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { createAuthor } from '../helpers/data/authorData';
 
-const AuthorForm = ({ formTitle }) => {
+const AuthorForm = ({ formTitle, setAuthors }) => {
   const [author, setAuthor] = useState({
     email: '',
     favorite: false,
@@ -12,7 +12,7 @@ const AuthorForm = ({ formTitle }) => {
   });
   const handleSubmit = (e) => {
     e.preventDefault();
-    createAuthor(author);
+    createAuthor(author).then((response) => setAuthors(response));
   };
   const handleInputChange = (e) => {
     setAuthor((prevState) => ({
@@ -67,6 +67,7 @@ const AuthorForm = ({ formTitle }) => {
 };
 
 AuthorForm.propTypes = {
-  formTitle: PropTypes.string.isRequired
+  formTitle: PropTypes.string.isRequired,
+  setAuthors: PropTypes.func.isRequired
 };
 export default AuthorForm;

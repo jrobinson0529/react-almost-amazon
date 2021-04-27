@@ -13,8 +13,13 @@ const createAuthor = (authorObject) => new Promise((resolve, reject) => {
     .then((response) => {
       const body = { firebaseKey: response.data.name };
       axios.patch(`${dbUrl}/authors/${response.data.name}.json`, body)
-        .then(() => resolve(console.warn('Author Added', authorObject)));
+        .then(() => getAuthors().then(resolve));
     }).catch((error) => reject(error));
 });
 
-export { getAuthors, createAuthor };
+const deleteAuthor = (firebaseKey) => new Promise((resolve, reject) => {
+  axios.delete(`${dbUrl}/authors/${firebaseKey}.json`)
+    .then(() => getAuthors().then(resolve))
+    .catch((error) => reject(error));
+});
+export { getAuthors, createAuthor, deleteAuthor };

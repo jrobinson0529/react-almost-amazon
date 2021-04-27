@@ -7,25 +7,32 @@ import {
   CardTitle,
   CardText
 } from 'reactstrap';
+import { deleteAuthor } from '../helpers/data/authorData';
 
 function PrintAuthor({
   email,
   favorite,
   first_name,
   last_name,
-  handleClick
+  setAuthors,
+  firebaseKey
 }) {
+  const handleClick = () => {
+    deleteAuthor(firebaseKey).then((response) => setAuthors(response));
+  };
   return (
     <>
       <Card
           body
           inverse
-          style={{ backgroundColor: '#333', borderColor: '#333', margin: '10px' }}
+          style={{
+            backgroundColor: '#333', borderColor: '#333', margin: '10px', width: '15em'
+          }}
         >
           <CardTitle tag='h5'>{first_name} {last_name}</CardTitle>
           <CardText>Email: {email}</CardText>
           <CardText>{favorite ? 'Favorite' : 'Nahfam'}</CardText>
-          {handleClick ? <Button onClick={handleClick}>Print Student</Button> : ''}
+          {<Button color='danger' onClick={handleClick}>DELETE</Button>}
         </Card>
     </>
   );
@@ -35,7 +42,8 @@ PrintAuthor.propTypes = {
   favorite: PropTypes.bool,
   first_name: PropTypes.string.isRequired,
   last_name: PropTypes.string.isRequired,
-  handleClick: PropTypes.func
+  setAuthors: PropTypes.func.isRequired,
+  firebaseKey: PropTypes.string.isRequired
 
 };
 export default PrintAuthor;

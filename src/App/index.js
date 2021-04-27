@@ -12,13 +12,16 @@ export default function App() {
   return (
     <>
       <div className="author-form d-flex flex-column w-50 mx-auto flex-wrap">
-        <AuthorForm formTitle='Add Author'/>
+        <AuthorForm formTitle='Add Author' setAuthors={setAuthors}/>
+      </div>
+      <div className='author-container d-flex'>
         {authors.map((object) => <PrintAuthor key={object.firebaseKey}
           email={object.email}
           first_name={object.first_name}
           last_name={object.last_name}
           favorite={object.favorite}
-          handleClick={() => console.warn(`You clicked on ${object.first_name}'s card`)}
+          setAuthors={setAuthors}
+          firebaseKey={object.firebaseKey}
         />)}
       </div>
     </>
