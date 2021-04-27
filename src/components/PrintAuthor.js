@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Card,
@@ -8,6 +8,7 @@ import {
   CardText
 } from 'reactstrap';
 import { deleteAuthor } from '../helpers/data/authorData';
+import AuthorForm from './AuthorForm';
 
 function PrintAuthor({
   email,
@@ -17,8 +18,17 @@ function PrintAuthor({
   setAuthors,
   firebaseKey
 }) {
-  const handleClick = () => {
-    deleteAuthor(firebaseKey).then((response) => setAuthors(response));
+  const [editing, setEditing] = useState(false);
+  const handleClick = (type) => {
+    switch (type) {
+      case 'delete':
+        deleteAuthor(firebaseKey).then((response) => setAuthors(response));
+        break;
+      case 'edit':
+        setEditing((prevState) => !prevState);
+        break;
+      default:
+    }
   };
   return (
     <>
@@ -31,8 +41,18 @@ function PrintAuthor({
         >
           <CardTitle tag='h5'>{first_name} {last_name}</CardTitle>
           <CardText>Email: {email}</CardText>
-          <CardText>{favorite ? 'Favorite' : 'Nahfam'}</CardText>
-          {<Button color='danger' onClick={handleClick}>DELETE</Button>}
+          <CardText>{favorite ? 'Favorite' : ''}</CardText>
+          <Button color='danger' onClick={() => handleClick('delete')}>DELETE</Button>
+          <Button color='info' onClick={() => handleClick('edit')}>EDIT</Button>
+          {editing && <AuthorForm
+          formTitle='Edit Author'
+          email={email}
+          first_name={first_name}
+          last_name={last_name}
+          favorite={favorite}
+          firebaseKey={firebaseKey}
+          setAuthors={setAuthors}
+          />}
         </Card>
     </>
   );
