@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import AuthorForm from '../components/AuthorForm';
-import PrintAuthor from '../components/PrintAuthor';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import NavBar from '../components/NavBar';
 import { getAuthors } from '../helpers/data/authorData';
+import Routes from '../helpers/Routes';
 
 export default function App() {
   const [authors, setAuthors] = useState([]);
@@ -11,19 +12,10 @@ export default function App() {
   }, []);
   return (
     <>
-      <div className="author-form d-flex flex-column w-50 mx-auto flex-wrap">
-        <AuthorForm formTitle='Add Author' setAuthors={setAuthors}/>
-      </div>
-      <div className='author-container d-flex'>
-        {authors.map((object) => <PrintAuthor key={object.firebaseKey}
-          email={object.email}
-          first_name={object.first_name}
-          last_name={object.last_name}
-          favorite={object.favorite}
-          setAuthors={setAuthors}
-          firebaseKey={object.firebaseKey}
-        />)}
-      </div>
+      <Router>
+        <NavBar />
+        <Routes authors={authors} setAuthors={setAuthors}/>
+      </Router>
     </>
   );
 }

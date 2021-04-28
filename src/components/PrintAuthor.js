@@ -10,19 +10,12 @@ import {
 import { deleteAuthor } from '../helpers/data/authorData';
 import AuthorForm from './AuthorForm';
 
-function PrintAuthor({
-  email,
-  favorite,
-  first_name,
-  last_name,
-  setAuthors,
-  firebaseKey
-}) {
+function PrintAuthor({ setAuthors, ...object }) {
   const [editing, setEditing] = useState(false);
   const handleClick = (type) => {
     switch (type) {
       case 'delete':
-        deleteAuthor(firebaseKey).then((response) => setAuthors(response));
+        deleteAuthor(object.firebaseKey).then((response) => setAuthors(response));
         break;
       case 'edit':
         setEditing((prevState) => !prevState);
@@ -39,18 +32,14 @@ function PrintAuthor({
             backgroundColor: '#333', borderColor: '#333', margin: '10px', width: '15em'
           }}
         >
-          <CardTitle tag='h5'>{first_name} {last_name}</CardTitle>
-          <CardText>Email: {email}</CardText>
-          <CardText>{favorite ? 'Favorite' : ''}</CardText>
+          <CardTitle tag='h5'>{object.first_name} {object.last_name}</CardTitle>
+          <CardText>Email: {object.email}</CardText>
+          <CardText>{object.favorite ? 'Favorite' : ''}</CardText>
           <Button color='danger' onClick={() => handleClick('delete')}>DELETE</Button>
           <Button color='info' onClick={() => handleClick('edit')}>EDIT</Button>
           {editing && <AuthorForm
           formTitle='Edit Author'
-          email={email}
-          first_name={first_name}
-          last_name={last_name}
-          favorite={favorite}
-          firebaseKey={firebaseKey}
+          {...object}
           setAuthors={setAuthors}
           />}
         </Card>

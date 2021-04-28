@@ -3,21 +3,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { createAuthor, updateAuthor } from '../helpers/data/authorData';
 
-const AuthorForm = ({
-  formTitle,
-  setAuthors,
-  email,
-  favorite,
-  first_name,
-  last_name,
-  firebaseKey
-}) => {
+const AuthorForm = ({ formTitle, setAuthors, ...args }) => {
   const [author, setAuthor] = useState({
-    email: email || '',
-    favorite: favorite || false,
-    first_name: first_name || '',
-    last_name: last_name || '',
-    firebaseKey: firebaseKey || null,
+    email: args?.email || '',
+    favorite: args?.favorite || false,
+    first_name: args?.first_name || '',
+    last_name: args?.last_name || '',
+    firebaseKey: args?.firebaseKey || null,
     uid: '',
   });
   const handleSubmit = (e) => {
