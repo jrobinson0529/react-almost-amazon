@@ -1,38 +1,29 @@
-import React, { useState } from 'react';
-import './App.scss';
+import React, { useState, useEffect } from 'react';
+import AuthorForm from '../components/AuthorForm';
+import PrintAuthor from '../components/PrintAuthor';
+import { getAuthors } from '../helpers/data/authorData';
 
-function App() {
-  const [domWriting, setDomWriting] = useState('Nothing Here!');
+export default function App() {
+  const [authors, setAuthors] = useState([]);
 
-  const handleClick = (e) => {
-    console.warn(`You clicked ${e.target.id}`);
-    setDomWriting(`You clicked ${e.target.id}! Check the Console!`);
-  };
-
+  useEffect(() => {
+    getAuthors().then((response) => setAuthors(response));
+  }, []);
   return (
-    <div className='App'>
-      <h2>INSIDE APP COMPONENT</h2>
-      <div>
-        <button
-          id='this-button'
-          className='btn btn-info'
-          onClick={handleClick}
-        >
-          I am THIS button
-        </button>
+    <>
+      <div className="author-form d-flex flex-column w-50 mx-auto flex-wrap">
+        <AuthorForm formTitle='Add Author' setAuthors={setAuthors}/>
       </div>
-      <div>
-        <button
-          id='that-button'
-          className='btn btn-primary mt-3'
-          onClick={handleClick}
-        >
-          I am THAT button
-        </button>
+      <div className='author-container d-flex'>
+        {authors.map((object) => <PrintAuthor key={object.firebaseKey}
+          email={object.email}
+          first_name={object.first_name}
+          last_name={object.last_name}
+          favorite={object.favorite}
+          setAuthors={setAuthors}
+          firebaseKey={object.firebaseKey}
+        />)}
       </div>
-      <h3>{domWriting}</h3>
-    </div>
+    </>
   );
 }
-
-export default App;
